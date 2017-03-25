@@ -32,16 +32,79 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 
-@RunWith(JUnitQuickcheck.class) public class DavidProperties {
+@RunWith(JUnitQuickcheck.class) public class DeveloperProperties {
 
   private KarumiHQs karumiHQs;
   private Chat chat;
+  private String ANY_NAME = "Pedro";
 
   @Before public void setUp() {
+
+    System.out.println("Ejecutando el setup!!! ");
+
     chat = mock(Chat.class);
     karumiHQs = new KarumiHQs(chat);
   }
 
+
+  @Property public void theNumberOfMaxibonsCanNotBeNegative(
+          String developeName, int numberOfMaxibons) {
+
+    Developer developer = new Developer(developeName, numberOfMaxibons);
+
+    System.out.println(developer + " -> " + numberOfMaxibons);
+
+    assertTrue(developer.getNumberOfMaxibonsToGrab() >= 0);
+
+  }
+
+  @Test public void theNumberOfMaxibonsIsRight() {
+
+    assertEquals(Karumies.PEDRO.getNumberOfMaxibonsToGrab(), 3);
+    assertEquals(Karumies.ALBERTO.getNumberOfMaxibonsToGrab(), 1);
+    assertEquals(Karumies.DAVIDE.getNumberOfMaxibonsToGrab(), 0);
+    assertEquals(Karumies.SERGIO.getNumberOfMaxibonsToGrab(), 2);
+    assertEquals(Karumies.JORGE.getNumberOfMaxibonsToGrab(), 1);
+
+  }
+
+  @Property public void theNumberOfMaxibonsAlwaysGreaterThan2(
+          List<@From(KarumiesGenerator.class) Developer> developers) {
+
+    for (Developer developer : developers) {
+      karumiHQs.openFridge(developer);
+      System.out.println(developer + " opened bridge -> left " + karumiHQs.getMaxibonsLeft());
+
+      assertTrue(karumiHQs.getMaxibonsLeft() > 2);
+    }
+
+    assertTrue(karumiHQs.getMaxibonsLeft() > 2);
+
+  }
+
+  @Property public void theNumberOfMaxibonsCanNeverBeLowerThanTwo(
+          @From(DevelopersGenerator.class) Developer developer) {
+
+    karumiHQs.openFridge(developer);
+
+    System.out.println(developer + " opened bridge -> left " + karumiHQs.getMaxibonsLeft());
+
+    assertTrue(karumiHQs.getMaxibonsLeft() > 2);
+  }
+
+  @Property public void theNumberOfMaxibonsCanNeverBeLowerThanTwoAtKarumi(
+          @From(KarumiesGenerator.class) Developer developer) {
+
+    karumiHQs.openFridge(developer);
+
+    System.out.println(developer + " opened bridge -> left " + karumiHQs.getMaxibonsLeft());
+
+    assertTrue(karumiHQs.getMaxibonsLeft() > 2);
+  }
+
+
+
+  /*
   @Test public void theNumberOfInitialMaxibonsAreTen() {
     assertEquals(10, karumiHQs.getMaxibonsLeft());
   }
@@ -118,5 +181,9 @@ import static org.mockito.Mockito.verify;
     }
     return maxibonsLeft;
   }
+
+*/
+
 }
+
 

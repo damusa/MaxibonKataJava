@@ -22,7 +22,7 @@ import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 
 public class KarumiesGenerator extends Generator<Developer> {
 
-  private static final Developer[] KARUMIES = new Developer[] {
+  public static final Developer[] KARUMIES = new Developer[] {
       Karumies.PEDRO, Karumies.ALBERTO, Karumies.DAVIDE, Karumies.JORGE, Karumies.SERGIO
   };
 
